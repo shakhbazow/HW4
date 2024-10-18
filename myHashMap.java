@@ -78,6 +78,8 @@ import java.util.Set;
 import java.util.HashSet;
 
 
+
+
 /**
  * Class HashNode
  *
@@ -224,6 +226,33 @@ class myHashMap<K,V> {
         /*
          * ADD YOUR CODE HERE
          *
+         */
+
+        int index = getBucketIndex(key);
+        HashNode<K, V> head = bucket.get(index);
+        HashNode<K, V> prev = null;
+
+        // traverse at index
+        while (head != null) {
+            // if key is found
+            if (head.key.equals(key)) {
+                V oldValue = head.value;
+
+                // if first node is found
+                if (prev == null) {
+                    bucket.set(index, head.next);
+                } else {
+                    prev.next = head.next;
+                }
+                size--;
+                return oldValue;
+            }
+            prev = head;
+            head = head.next;
+        }
+        // not found
+        return null;
+        /*
          * Review the code in the whole object to understand teh data structures layout.
          * Additionally, review the method put() for inserting a new Key / Value pair into
          * the HashMap. This method will do the opposite by removing an element. Do see
@@ -231,7 +260,7 @@ class myHashMap<K,V> {
          * return value is returned the invoking function based on the remove outcome.
          */
 
-        return null;
+
     }
 
 
@@ -256,7 +285,7 @@ class myHashMap<K,V> {
             return false;
         }
 
-        // Key was found and its value equals the passed
+        // key was found
         // parameter 'val'
         remove(key);
 
@@ -406,7 +435,23 @@ class myHashMap<K,V> {
          * replace (see method's prologue above).
          */
 
-        return val;
+        int index = getBucketIndex(key);
+        HashNode<K, V> head = bucket.get(index);
+
+        // traverse the chain
+        while (head != null) {
+            // if the key is found
+            if (head.key.equals(key)) {
+                V oldValue = head.value;
+                head.value = val;
+                return oldValue;
+            }
+            head = head.next;
+        }
+        // key not found
+        return null;
+
+
     }
 
     
@@ -434,7 +479,22 @@ class myHashMap<K,V> {
          * value 'oldval', and is so, it SHOULD call replace(K, V) for code reuse.
          */
 
+        int index = getBucketIndex(key);
+        HashNode<K, V> head = bucket.get(index);
+
+        // traverse the chain
+        while (head != null) {
+            // if the key is found and the current value equals oldVal
+            if (head.key.equals(key) && head.value.equals(oldVal)) {
+                head.value = newVal;
+                return true;
+            }
+            head = head.next;
+        }
+        // key not found or value does not match oldVal
         return false;
+
+
     }
 
 

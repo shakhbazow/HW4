@@ -1,5 +1,5 @@
 /*
- * *** YOUR NAME GOES HERE / YOUR SECTION NUMBER ***
+ * *** EMIL SHAHBAZOV / 272-01 ***
  *
  * This HashingProblems object contains three methods / problems that you must
  * complete utilize the HashMap object within the Java's Collection Framework Library.
@@ -41,7 +41,23 @@ class HashingProblems {
          * returning 0.0/0.0 IS correct (which would return a non-number).
          */
 
-         return 0.0 / 0.0;
+        double sum = 0.0;
+        int count = 0;
+
+        for (int key : array) {
+            if (map.containsKey(key)) {
+                sum += map.get(key);
+                count++;
+            }
+        }
+
+        if (count == 0) {
+            // Return NaN if no common keys are found
+            return 0.0 / 0.0;
+        } else {
+            return sum / count;
+        }
+       //  return 0.0 / 0.0;
   }
 
 
@@ -61,9 +77,16 @@ class HashingProblems {
        *
        * Hint: Consider iterating over the HashMap using the keySet method.
        */
-
+      for (Integer key : map.keySet()) {
+          if (key % 2 != 0) { // Check if the key is odd
+              result.add(map.get(key));
+          }
+      }
 
       return result;
+
+
+
   }
 
 
@@ -109,8 +132,34 @@ class HashingProblems {
       /*
        * ADD YOUR CODE HERE
        */
+      int count = 0;
+      HashSet<Integer> set = new HashSet<>();
 
-      return -1;
+      // add all numbers to the set
+      for (int num : numbers) {
+          set.add(num);
+      }
+
+      // use a HashSet to keep track of counted pairs to avoid duplicates
+      HashSet<String> countedPairs = new HashSet<>();
+
+      for (int num : numbers) {
+          int target = num - k;
+
+          if (set.contains(target)) {
+              // create a unique key for the pair to avoid duplicates
+              String pair = Math.min(num, target) + "," + Math.max(num, target);
+
+              if (!countedPairs.contains(pair)) {
+                  countedPairs.add(pair);
+                  count++;
+              }
+          }
+      }
+
+      return count;
+
+   
   }
 
 } /* end class HashingProblems */
